@@ -39,15 +39,15 @@ class MyApp extends StatelessWidget {
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final status = watch(permissionPod);
+    final permissionState = watch(permissionStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('WhatsApp Status Saver'),
       ),
       body: Center(
-        child: status.maybeWhen(
+        child: permissionState.maybeWhen(
           orElse: () => RequestPermissionWidget(
-            permissionStatus: status,
+            permissionState: permissionState,
           ),
           loading: () => CircularProgressIndicator(),
           granted: () => StatusesPage(),
@@ -60,10 +60,10 @@ class HomePage extends ConsumerWidget {
 class RequestPermissionWidget extends StatelessWidget {
   const RequestPermissionWidget({
     Key? key,
-    required this.permissionStatus,
+    required this.permissionState,
   }) : super(key: key);
 
-  final PermissionState permissionStatus;
+  final PermissionState permissionState;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -84,14 +84,16 @@ class RequestPermissionWidget extends StatelessWidget {
           SizedBox(height: Adaptive.h(5)),
           ElevatedButton(
             onPressed: () {
-              context.read(permissionPod.notifier).requestPermission().then(
-                  (_) => context
-                      .read(permissionPod.notifier)
+              context
+                  .read(permissionStateProvider.notifier)
+                  .requestPermission()
+                  .then((_) => context
+                      .read(permissionStateProvider.notifier)
                       .getPermissionStatus());
             },
             child: Text('ENABLE STORAGE PERMISSION'),
           ),
-          Text(permissionStatus.toString()),
+          Text(permissionState.toString()),
         ],
       ),
     );

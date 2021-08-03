@@ -9,7 +9,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'storage_permission_statenotifier.dart';
 
-final permissionPod =
+final permissionStateProvider =
     StateNotifierProvider<PermissionStatusHandler, PermissionState>(
   (ref) => PermissionStatusHandler(),
 );
