@@ -33,6 +33,7 @@ Future<bool> saveStatus(Status status) async {
     final baseNameWithExtension = getBaseName(filePath);
     final rootDir = await getRootDir();
     print(rootDir);
+    //TODO: Read user defined folder name from shared preferences
     final savedImagesPath = rootDir + '/SavedStatus/';
     final _ = await Directory(savedImagesPath).create();
     final imgPath = savedImagesPath + baseNameWithExtension;

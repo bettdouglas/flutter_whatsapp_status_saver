@@ -83,13 +83,13 @@ class RequestPermissionWidget extends StatelessWidget {
           ),
           SizedBox(height: Adaptive.h(5)),
           ElevatedButton(
-            onPressed: () {
-              context
+            onPressed: () async {
+              await context
                   .read(permissionStateProvider.notifier)
-                  .requestPermission()
-                  .then((_) => context
-                      .read(permissionStateProvider.notifier)
-                      .getPermissionStatus());
+                  .requestPermission();
+              // .then((_) => context
+              //     .read(permissionStateProvider.notifier)
+              //     .getPermissionStatus());
             },
             child: Text('ENABLE STORAGE PERMISSION'),
           ),

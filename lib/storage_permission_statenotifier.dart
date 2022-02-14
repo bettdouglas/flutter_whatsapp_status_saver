@@ -2,9 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart'
     hide PermissionStatus;
 import 'package:status_saver/models.dart';
+import 'package:status_saver/permission_service.dart';
 
 class PermissionStatusHandler extends StateNotifier<PermissionState> {
-  PermissionStatusHandler() : super(const PermissionState.initial()) {
+  final PermissionService permissionService;
+
+  PermissionStatusHandler({
+    required this.permissionService,
+  }) : super(const PermissionState.initial()) {
     getPermissionStatus();
   }
 
@@ -14,9 +19,7 @@ class PermissionStatusHandler extends StateNotifier<PermissionState> {
   }
 
   Future<PermissionState> _permissionStatus() async {
-    final status = await Permission.storage.status;
-    // final ext = await Permission.manageExternalStorage.status;
-    // final ext = await Permission.manageExternalStorage.status;
+    final status = await permissionService.request(Permission.storage);
     if (status.isDenied) {
       return PermissionState.denied();
     } else if (status.isGranted) {
@@ -38,8 +41,8 @@ class PermissionStatusHandler extends StateNotifier<PermissionState> {
   }
 
   Future requestPermission() async {
-    final status = await _permissionStatus();
-    status.maybeWhen(
+    // final status = await _permissionStatus();
+    await state.maybeWhen(
       orElse: () async => await Permission.storage.request(),
       granted: () => null,
     );

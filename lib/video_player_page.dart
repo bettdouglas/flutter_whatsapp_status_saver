@@ -2,7 +2,6 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:status_saver/providers.dart';
-
 import 'package:status_saver/models.dart';
 import 'package:status_saver/main.dart';
 

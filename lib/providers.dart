@@ -5,14 +5,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:status_saver/io_functions.dart';
 import 'package:status_saver/models.dart';
+import 'package:status_saver/permission_service.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'storage_permission_statenotifier.dart';
 
 final permissionStateProvider =
     StateNotifierProvider<PermissionStatusHandler, PermissionState>(
-  (ref) => PermissionStatusHandler(),
+  (ref) => PermissionStatusHandler(
+    permissionService: ref.watch(permissionServiceProvider),
+  ),
 );
+
+final permissionServiceProvider = Provider((ref) => PermissionService());
 
 final statusesPod = FutureProvider<List<Status>>((ref) async {
   final rootDir = await getRootDir();
